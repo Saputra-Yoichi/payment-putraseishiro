@@ -306,11 +306,13 @@ function toggleMusic(){
   }
 }
 
-pages.addEventListener("scroll",()=>{
-  const index = Math.round(pages.scrollLeft / pages.offsetWidth);
-  dots.forEach(d=>d.classList.remove("active"));
-  dots[index]?.classList.add("active");
-});
+if(pages){
+  pages.addEventListener("scroll",()=>{
+    const index = Math.round(pages.scrollLeft / pages.offsetWidth);
+    dots.forEach(d=>d.classList.remove("active"));
+    dots[index]?.classList.add("active");
+  });
+}
 
 function toggleDark(){
   document.body.classList.toggle("dark");
