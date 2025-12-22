@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="id">  
+<head>  
+<meta charset="utf-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+<title>FAYY PAYMENT</title>  
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">  
+<style>  
+:root{  
+  --bg:#e6dfd1;  
+  --panel:rgba(255,255,255,.78);  
+  --text:#2d261b;  
+  --border:#c8b79d;  
+  --box:rgba(255,255,255,.88);  
+  --success:#4ade80;  
+  --warning:#facc15;  
+}  
+  
+.copy-btn{  
+  margin-top:10px;  
+}  
+  
+.qris-img{  
+  max-width: 100%;  
+  width: 260px;  
+  height: auto;  
+  display: block;  
+  margin: 0 auto;  
+}  
+  
+.hidden{display:none}  
+  
+.status{  
+  text-align:center;  
+  margin-top:10px;  
+  font-weight:600;  
+}  
+  
+#paymentInfo{  
+  margin-top:15px;  
+  padding:12px;  
+  border-radius:12px;  
+  border:1px dashed var(--border);  
+  text-align:center;  
+  display:none;  
+}  
+  
+body.dark{  
+  --bg:#0e0e11;  
+  --panel:rgba(20,20,25,.85);  
+  --text:#e7dcc6;  
+  --border:#6f5b3e;  
+  --box:rgba(25,25,32,.9);  
+  --success:#22c55e;  
+  --warning:#eab308;  
+}  
+select,input,button{  
+  width:100%;  
+  padding:10px;  
+  margin-top:10px;  
+  border-radius:10px;  
+  border:1px solid var(--border);  
+  font-family:inherit;  
+  box-sizing: border-box;  
+}  
+  
+button{  
+  cursor:pointer;  
+  background:transparent;  
+  font-weight:600;  
+  color: var(--text);  
+}  
+  
+.status-BERHASIL { color:#22c55e; font-weight:bold; }
+.status-PENDING { color:#eab308; font-weight:bold; }
+.status-GAGAL { color:#ef4444; font-weight:bold; }
+  
+button:hover{  
+  background:rgba(0,0,0,.05);  
+}  
+  
+/* HISTORY DANA STYLE */  
+.history-section{  
+  margin-top:30px;  
+}  
+.tx-item{  
+  background:var(--box);  
+  border:2px solid var(--border);  
+  padding:20px;  
+  margin:15px 0;  
+  border-radius:16px;  
+  transition: all .3s;  
+  cursor: pointer;  
+}  
+.tx-item:hover{  
+  border-color: var(--success);  
+  transform: translateY(-3px);  
+  box-shadow: 0 12px 30px rgba(0,0,0,.25);  
+}  
+.tx-header{  
+  display: flex;  
+  justify-content: space-between;  
+  align-items: center;  
+  margin-bottom: 12px;  
+}  
+.tx-id{  
+  font-weight:700;  
+  font-size:18px;  
+  color: var(--success);  
+}  
+.tx-status{  
+  padding: 6px 12px;  
+  border-radius: 20px;  
+  font-weight: 600;  
+  font-size: 14px;  
+}  
+.status-BERHASIL{ background: rgba(34,197,94,.2); color:#22c55e; border:1px solid #22c55e; }
+.status-PENDING{ background: rgba(234,179,8,.2); color:#eab308; border:1px solid #eab308; }
+.status-GAGAL{ background: rgba(239,68,68,.2); color:#ef4444; border:1px solid #ef4444; }
+.tx-proof{  
+  margin: 15px 0;  
+  text-align: center;  
+}  
+.proof-img{  
+  max-width: 100%;  
+  max-height: 250px;  
+  border-radius: 12px;  
+  border: 2px solid var(--border);  
+  box-shadow: 0 8px 20px rgba(0,0,0,.2);  
+  cursor: zoom-in;  
+  transition: .3s;  
+}  
+.proof-img:hover{  
+  transform: scale(1.02);  
+}  
+.tx-details{  
+  background: rgba(255,255,255,.5);  
+  padding: 15px;  
+  border-radius: 12px;  
+  border-left: 4px solid var(--success);  
+}  
+.detail-row{  
+  display: flex;  
+  justify-content: space-between;  
+  margin: 8px 0;  
+  font-size: 14px;  
+}  
+.detail-label{ font-weight: 600; }  
+.no-proof{  
+  background: var(--warning);  
+  color: white;  
+  padding: 20px;  
+  border-radius: 12px;  
+  text-align: center;  
+  font-style: italic;  
+}  
+.empty-history{  
+  text-align: center;  
+  color: var(--border);  
+  padding: 40px;  
+  font-size: 16px;  
+}  
+  
+/* BASE */  
+body{  
+  margin:0;  
+  font-family:'Cinzel',serif;  
+  background:var(--bg) url('https://files.catbox.moe/6sdawf.jpg') center/cover no-repeat fixed;  
+  color:var(--text);  
+  transition:.3s;  
+}  
+.container{  
+  max-width:900px;  
+  margin:40px auto;  
+  padding:35px;  
+  background:var(--panel);  
+  border-radius:18px;  
+  border:1px solid var(--border);  
+  box-shadow:0 14px 30px rgba(0,0,0,.35);  
+}  
+h1{text-align:center;margin-bottom:5px}  
+  
+/* TOGGLE */  
+.toggle{  
+  text-align:center;  
+  margin-bottom:10px;  
+}  
+.toggle button{  
+  padding:8px 18px;  
+  border-radius:20px;  
+  border:1px solid var(--border);  
+  background:transparent;  
+  color:var(--text);  
+  cursor:pointer;  
+  font-family:inherit;  
+}  
+  
+/* CONTENT */  
+.section-title{  
+  text-align:center;  
+  font-size:22px;  
+  margin:25px 0 20px;  
+  border-bottom:2px solid var(--border);  
+  padding-bottom:10px;  
+}  
+.price-box{  
+  background:var(--box);  
+  border:1px solid var(--border);  
+  padding:16px;  
+  border-radius:14px;  
+  margin:12px 0;  
+  text-align:center;  
+  box-shadow:0 6px 16px rgba(0,0,0,.2);  
+  transition:.3s;  
+  cursor: pointer;  
+}  
+.price-box:hover{  
+  transform:translateY(-4px);  
+}  
+  
+/* PAYMENT */  
+.pay-box{  
+  text-align:center;  
+  padding:22px;  
+  margin-top:25px;  
+  background:var(--box);  
+  border:1px solid var(--border);  
+  border-radius:16px;  
+}  
+  
+/* RESPONSIVE */  
+@media (max-width:768px){  
+  .container{padding:20px;}  
+  .tx-header{ flex-direction: column; align-items: flex-start; gap: 10px; }  
+  .proof-img{ max-height: 200px; }  
+}  
+</style>  
+</head>  
+<body>  
+<div class="container">  
+  <h1>FAYY • PAYMENT</h1>  
+  <div class="toggle">  
+    <button onclick="toggleDark()">🌙 Dark Mode</button>  
+  </div>  
+  <!-- AUDIO -->  
+  <audio id="bgm" loop>  
+    <source src="https://pomf2.lain.la/f/fsy0k39j.mp3" type="audio/mpeg">  
+    Browser kamu tidak mendukung audio.  
+  </audio>  
+  <div style="text-align:center;margin-top:20px">  
+    <button id="musicBtn" onclick="toggleMusic()"  
+    style="padding:10px 22px;  
+           border-radius:20px;  
+           border:1px solid var(--border);  
+           background:transparent;  
+           font-family:inherit;  
+           cursor:pointer;  
+           color:var(--text);">  
+    🎵 Play Song One In A Million  
+    </button>  
+  </div>  
+  
+  <section>  
+    <!-- FEE REKBER -->  
+    <div class="section-title">💰 FEE MIDMAN / TRANSAKSI</div>  
+    <div class="price-box">Rp0 – Rp99.000 → Fee Rp5.000</div>  
+    <div class="price-box">Rp100.000 – Rp199.000 → Fee Rp10.000</div>  
+    <div class="price-box">Rp200.000 – Rp249.000 → Fee Rp15.000</div>  
+    <div class="price-box">Rp250.000 – Rp399.000 → Fee Rp20.000</div>  
+    <div class="price-box">Rp400.000 – Rp599.000 → Fee Rp30.000</div>  
+    <div class="price-box">Rp600.000 – Rp999.000 → Fee Rp40.000</div>  
+    <div class="price-box">Rp1.000.000 – Rp2.000.000 → Fee Rp50.000</div>  
+    <div class="price-box">━FEE BT/DELAY/TT━</div>  
+    <div class="price-box">MC Delay → Fee Rp30.000</div>  
+    <div class="price-box">Tukar Tambah → Fee Rp30.000</div>  
+    <div class="price-box">Barter → Fee Rp30.000</div>  
+    <div class="price-box">━JASA PENGAMANAN━</div>  
+    <div class="price-box">Jasa Pengamanan → Fee Rp20.000</div>  
+  </section>  
+  
+  <div class="pay-box">  
+    <p style="text-align:center;font-weight:600">  
+    Kode Transaksi: <span id="trxView"></span>  
+    </p>  
+    <input type="text" id="amount" placeholder="Nominal Transaksi (Rp)">  
+    <div id="calcResult" style="margin-top:10px;font-weight:600"></div>  
+    <select id="paymentMethod">  
+      <option value="">-- Pilih --</option>  
+      <option value="dana">💸 DANA</option>  
+      <option value="gopay">💸 GOPAY</option>  
+      <option value="qris">📱 QRIS All Payment</option>  
+      <option value="mandiri">🏦 MANDIRI</option>  
+    </select>  
+    <div id="paymentInfo"></div>  
+    <button id="payBtn">💳 Klik Untuk Transfer</button>  
+    <div id="uploadSection" class="hidden">  
+      <div class="section-title">Upload Bukti</div>  
+      <input type="text" id="note" placeholder="Usn Telegram / No Whatsapp">  
+      <input type="text" id="product" placeholder="Nama Product">  
+      <input type="file" id="fileInput" accept="image/*,application/pdf">  
+      <img id="preview" style="max-width:100%;display:none;margin-top:10px;border-radius:12px">  
+      <button id="sendBtn">📤 Kirim Bukti</button>  
+      <p id="statusText" class="status"></p>  
+    </div>  
+  </div>  
+  
+  <!-- HISTORY SECTION - DANA STYLE -->  
+  <div class="history-section">  
+    <div class="section-title">📱 Riwayat Transaksi</div>  
+    <div id="recentTx"></div>  
+  </div>  
+  
+  <!-- KONTAK -->
+  <div class="section-title">Kontak</div>  
+  <p style="text-align:center;font-size:18px">  
+  Admin WhatsApp:  
+  <b>  
+    <a href="https://wa.me/6285283355152" target="_blank" style="color:inherit;text-decoration:none;">  
+      6285283355152 (FAYY)  
+    </a>  
+  </b>  
+  </p>  
+  <p style="text-align:center;font-size:18px">  
+  Admin:  
+  <b>  
+    <a href="https://t.me/putraseishiro" target="_blank" style="color:inherit;text-decoration:none;">  
+      @putraseishiro  
+    </a>  
+  </b>  
+  </p> 
+</div>  
+
+<script>  
+let allHistory = [];  
+let currentTrxId = '';  
+let lastUpdateId = 0;  
+const BOT_TOKEN = "8256648645:AAGouJIlcod8LHA6FSCNgcaDDOZTjM7bPfc";  
+const CHAT_ID = "6086060284";  
+
+window.addEventListener('load', () => {  
+  currentTrxId = generateTrxID();  
+  document.getElementById("trxView").textContent = currentTrxId;  
+  loadHistory();  
+  startStatusPolling();  
+});  
+
+const amountInput = document.getElementById("amount");  
+const calcResult = document.getElementById("calcResult");  
+
+function getFee(n) {  
+  if (n < 100000) return 5000;  
+  if (n < 200000) return 10000;  
+  if (n < 250000) return 15000;  
+  if (n < 400000) return 20000;  
+  if (n < 600000) return 30000;  
+  if (n < 1000000) return 40000;  
+  return 50000;  
+}  
+
+amountInput.addEventListener("input", () => {
+  let raw = amountInput.value.replace(/[^0-9]/g, "");  
+  if (!raw) {  
+    calcResult.innerHTML = "";  
+    amountInput.value = "";  
+    return;  
+  }  
+
+  let val = parseInt(raw);  
+  if (isNaN(val) || val <= 0) return;  
+
+  const fee = getFee(val);  
+  const total = val + fee;  
+
+  amountInput.value = val.toLocaleString("id-ID");  
+  calcResult.innerHTML = `  
+    💰 Fee: Rp${fee.toLocaleString("id-ID")}<br>  
+    🧾 Total Transfer: <b>Rp${total.toLocaleString("id-ID")}</b>  
+  `;  
+});  
+
+function generateTrxID() {  
+  const d = new Date();  
+  return `FAYY-${d.getFullYear()}${(d.getMonth()+1).toString().padStart(2,'0')}${d.getDate().toString().padStart(2,'0')}-${Math.floor(Math.random()*9000+1000)}`;  
+}  
+
+const fileInput = document.getElementById("fileInput");  
+const preview = document.getElementById("preview");  
+
+fileInput.addEventListener("change", () => {  
+  const file = fileInput.files[0];  
+  if (file && file.type.startsWith("image/")) {  
+    const reader = new FileReader();  
+    reader.onload = e => {  
+      preview.src = e.target.result;  
+      preview.style.display = "block";  
+    };  
+    reader.readAsDataURL(file);  
+  } else {  
+    preview.style.display = "none";  
+  }  
+});  
+
+document.querySelectorAll(".price-box").forEach(box => {  
+  box.addEventListener("click", () => {  
+    document.getElementById("product").value = box.textContent.trim();  
+    document.getElementById("uploadSection").classList.remove("hidden");  
+  });  
+});  
+
+let playing = false;  
+const bgm = document.getElementById("bgm");  
+const musicBtn = document.getElementById("musicBtn");  
+
+function toggleMusic() {  
+  if (!playing) {  
+    bgm.volume = 0.5;  
+    bgm.play().then(() => {  
+      playing = true;  
+      musicBtn.textContent = "⏸ Pause Memories";  
+    }).catch(e => console.log("Audio play failed:", e));  
+  } else {  
+    bgm.pause();  
+    playing = false;  
+    musicBtn.textContent = "🎵 Play Memories";  
+  }  
+}  
+
+function toggleDark() {  
+  document.body.classList.toggle("dark");  
+}  
+
+const PAYMENT_DATA = {  
+  dana: {  
+    label: "💸 DANA",  
+    number: "0821-1380-1890",  
+    name: "FAYYY"  
+  },  
+  gopay: {  
+    label: "💸 GOPAY",  
+    number: "0852-8335-5152",  
+    name: "FAYYY"  
+  },  
+  qris: {  
+    label: "📱 QRIS All Payment",  
+    qr: "https://files.catbox.moe/3hulmi.jpeg",  
+    name: "MODDY STORE"  
+  },   
+  mandiri: {  
+    label: "🏦 MANDIRI",  
+    number: "4616994895890566",  
+    name: "FAYYY"  
+  }  
+};  
+
+const paymentSelect = document.getElementById("paymentMethod");  
+const paymentInfo = document.getElementById("paymentInfo");  
+const payBtn = document.getElementById("payBtn");  
+const uploadSection = document.getElementById("uploadSection");  
+const sendBtn = document.getElementById("sendBtn");  
+const statusText = document.getElementById("statusText");  
+
+paymentSelect.addEventListener("change", () => {  
+  const method = paymentSelect.value;  
+  if (!method || !PAYMENT_DATA[method]) {  
+    paymentInfo.style.display = "none";  
+    return;  
+  }  
+  
+  const p = PAYMENT_DATA[method];  
+  paymentInfo.style.display = "block";  
+  
+  if (method === "qris") {  
+    paymentInfo.innerHTML = `  
+      <b style="font-size:18px">${p.label}</b><br><br>  
+      <img src="${p.qr}" class="qris-img" style="border-radius:14px"><br><br>  
+      <b>Atas Nama:</b> ${p.name}<br>  
+      <small>Scan pakai DANA / OVO / Gopay / ShopeePay / Mobile Banking</small>  
+    `;  
+  } else {  
+    paymentInfo.innerHTML = `  
+      <b style="font-size:18px">${p.label}</b><br><br>  
+      Nomor: <b>${p.number}</b><br>  
+      Atas Nama: <b>${p.name}</b><br>  
+      <button class="copy-btn" onclick="copyNumber('${p.number}')">  
+        📋 Copy Nomor  
+      </button>  
+    `;  
+  }  
+});  
+
+function copyNumber(num) {  
+  navigator.clipboard.writeText(num).then(() => {  
+    alert("Nomor berhasil disalin!");  
+  });  
+}  
+
+payBtn.onclick = () => {  
+  if (!paymentSelect.value) {  
+    alert("Pilih metode pembayaran dulu!");  
+    return;  
+  }  
+  uploadSection.classList.remove("hidden");  
+  payBtn.textContent = "⏳ Menunggu Bukti";  
+  paymentSelect.disabled = true;  
+};  
+
+sendBtn.onclick = async () => {  
+  const note = document.getElementById("note").value.trim();  
+  const product = document.getElementById("product").value.trim();  
+  const rawAmount = amountInput.value.replace(/[^0-9]/g, "");  
+  
+  if (!product) {  
+    alert("Nama produk wajib diisi!");  
+    return;  
+  }  
+  
+  if (!rawAmount || parseInt(rawAmount) <= 0) {  
+    alert("Nominal transaksi wajib diisi dan lebih dari 0!");  
+    return;  
+  }  
+  
+  if (!fileInput.files.length) {  
+    alert("Pilih bukti pembayaran!");  
+    return;  
+  }  
+  
+  const file = fileInput.files[0];  
+  const method = paymentSelect.value;  
+  const p = PAYMENT_DATA[method];  
+  const nomor = p.number ? p.number : "QRIS";  
+  const amount = Number(rawAmount);  
+  const fee = getFee(amount);  
+  const total = amount + fee;  
+  
+  const formData = new FormData();  
+  formData.append("chat_id", CHAT_ID);  
+  formData.append("caption", `🧾 Bukti Pembayaran  
+🆔 ID: ${currentTrxId}  
+💰 Metode: ${p.label}  
+💳 Nomor: ${nomor}  
+👤 A/N: ${p.name}  
+📦 Produk: ${product}  
+💵 Nominal: Rp${amount.toLocaleString("id-ID")}  
+➕ Fee: Rp${fee.toLocaleString("id-ID")}  
+🧮 Total: Rp${total.toLocaleString("id-ID")}  
+📞 Kontak: ${note || "-"}  
+🕓 ${new Date().toLocaleString("id-ID")}  
+
+👇 STATUS TRANSAKSI 👇`);  
+  
+  const isImage = file.type.startsWith("image/");  
+  formData.append(isImage ? "photo" : "document", file);  
+  
+  // INLINE KEYBOARD YANG BERFUNGSI  
+  formData.append("reply_markup", JSON.stringify({  
+    inline_keyboard: [[  
+      { text: "✅ BERHASIL", callback_data: `success_${currentTrxId}` },  
+      { text: "⏳ PENDING", callback_data: `pending_${currentTrxId}` },  
+      { text: "❌ GAGAL", callback_data: `failed_${currentTrxId}` }  
+    ]]  
+  }));  
+  
+  // KIRIM KE TELEGRAM  
+  statusText.textContent = "⏳ Mengirim bukti...";  
+  statusText.className = "status";  
+  sendBtn.disabled = true;  
+  
+  try {  
+    const res = await fetch(  
+      `https://api.telegram.org/bot${BOT_TOKEN}/${isImage ? "sendPhoto" : "sendDocument"}`,  
+      { method: "POST", body: formData }  
+    );  
+    const data = await res.json();  
+    
+    if (data.ok) {  
+      statusText.innerHTML = "✅ Bukti berhasil dikirim! Menyimpan ke riwayat...";  
+      statusText.className = "status status-BERHASIL";  
+      
+      await saveTx({  
+        id: currentTrxId,  
+        method: p.label,  
+        amount: amount.toLocaleString("id-ID"),  
+        product: product,  
+        note: note || "-",  
+        status: "PENDING"  
+      }, file);  
+      
+      setTimeout(() => {
+        resetForm();  
+      }, 3000);  
+    } else {  
+      throw new Error(data.description || "Gagal mengirim ke Telegram");  
+    }  
+  } catch (err) {  
+    statusText.innerHTML = `❌ Gagal: ${err.message}`;  
+    statusText.className = "status status-GAGAL";  
+    console.error("Upload error:", err);  
+  } finally {  
+    sendBtn.disabled = false;  
+  }  
+};  
+
+function resetForm() {
+  fileInput.value = "";  
+  document.getElementById("note").value = "";  
+  document.getElementById("product").value = "";  
+  amountInput.value = "";  
+  calcResult.innerHTML = "";  
+  preview.style.display = "none";  
+  payBtn.textContent = "💳 Klik Untuk Transfer";  
+  paymentSelect.disabled = false;  
+  paymentSelect.value = "";  
+  paymentInfo.style.display = "none";  
+  uploadSection.classList.add("hidden");  
+  currentTrxId = generateTrxID();  
+  document.getElementById("trxView").textContent = currentTrxId;  
+  statusText.textContent = "";  
+}
+
+function saveTx(data, proofFile = null) {  
+  return new Promise((resolve) => {  
+    if (proofFile) {  
+      const reader = new FileReader();  
+      reader.onload = function(e) {  
+        const history = JSON.parse(localStorage.getItem('txHistory') || '[]');  
+        const txData = {  
+          ...data,  
+          proof: e.target.result,  
+          proofType: proofFile.type,  
+          createdAt: new Date().toISOString(),  
+          fee: getFee(Number(data.amount.replace(/[^0-9]/g, '')))  
+        };  
+        history.unshift(txData);  
+        if (history.length > 50) history.length = 50;  
+        localStorage.setItem('txHistory', JSON.stringify(history));  
+        allHistory = history;  
+        renderHistory(history);  
+        resolve(txData);  
+      };  
+      reader.readAsDataURL(proofFile);  
+    } else {  
+      const history = JSON.parse(localStorage.getItem('txHistory') || '[]');  
+      const txData = {  
+        ...data,  
+        createdAt: new Date().toISOString(),  
+        fee: getFee(Number(data.amount.replace(/[^0-9]/g, '')))  
+      };  
+      history.unshift(txData);  
+      if (history.length > 50) history.length = 50;  
+      localStorage.setItem('txHistory', JSON.stringify(history));  
+      allHistory = history;  
+      renderHistory(history);  
+      resolve(txData);  
+    }  
+  });  
+}  
+
+function loadHistory() {  
+  allHistory = JSON.parse(localStorage.getItem('txHistory') || '[]');  
+  renderHistory(allHistory);  
+}  
+
+function renderHistory(history) {  
+  const container = document.getElementById("recentTx");  
+  if (history.length === 0) {  
+    container.innerHTML = '<div class="empty-history">📭 Belum ada riwayat transaksi</div>';  
+    return;  
+  }  
+  
+  container.innerHTML = history.map((tx, index) => {  
+    const hasProof = tx.proof && tx.proof.startsWith('data:');  
+    const proofUrl = hasProof ? tx.proof : null;  
+    const status = tx.status || 'PENDING';  
+      
+    return `  
+    <div class="tx-item" data-index="${index}">  
+      <div class="tx-header">  
+        <div class="tx-id">🆔 ${tx.id}</div>  
+        <div class="tx-status status-${status}">${status}</div>  
+      </div>  
+      
+      ${hasProof ? `  
+      <div class="tx-proof">  
+        <img src="${proofUrl}" class="proof-img" 
+             alt="Bukti Transfer ${tx.id}" 
+             onclick="zoomProof('${proofUrl}')">  
+      </div>` : `  
+      <div class="no-proof">  
+        ⚠️ Bukti transfer tidak tersimpan  
+      </div>`}  
+      
+      <div class="tx-details">  
+        <div class="detail-row">  
+          <span class="detail-label">💰 Metode:</span>  
+          <span>${tx.method}</span>  
+        </div>  
+        <div class="detail-row">  
+          <span class="detail-label">📌 Status:</span>  
+          <span class="status-${status}">${status}</span>  
+        </div>  
+        <div class="detail-row">  
+          <span class="detail-label">💵 Nominal:</span>  
+          <span>Rp${tx.amount}</span>  
+        </div>  
+        <div class="detail-row">  
+          <span class="detail-label">➕ Fee:</span>  
+          <span>Rp${tx.fee?.toLocaleString("id-ID") || 'N/A'}</span>  
+        </div>  
+        <div class="detail-row">  
+          <span class="detail-label">📦 Produk:</span>  
+          <span>${tx.product}</span>  
+        </div>  
+        <div class="detail-row">  
+          <span class="detail-label">📞 Kontak:</span>  
+          <span>${tx.note || '-'}</span>  
+        </div>  
+        <div class="detail-row">  
+          <span class="detail-label">🕓 Tanggal:</span>  
+          <span>${formatDate(tx.createdAt)}</span>  
+        </div>  
+      </div>  
+    </div>`;  
+  }).join('');  
+}  
+
+function zoomProof(src) {  
+  const modal = document.createElement('div');  
+  modal.style.cssText = `  
+    position:fixed; top:0; left:0; width:100vw; height:100vh;  
+    background:rgba(0,0,0,.95); z-index:9999; display:flex;  
+    align-items:center; justify-content:center;`;  
+  modal.innerHTML = `  
+    <img src="${src}" style="max-width:90%; max-height:90%; border-radius:12px;">  
+    <button onclick="this.parentElement.remove()" style="  
+      position:absolute; top:20px; right:20px; background:#ef4444; color:white;  
+      border:none; padding:12px 16px; border-radius:50%; cursor:pointer;  
+      font-size:20px; font-weight:bold;">✕</button>`;  
+  document.body.appendChild(modal);  
+}  
+
+function formatDate(dateStr) {  
+  return new Date(dateStr).toLocaleString('id-ID', {  
+    weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',  
+    hour: '2-digit', minute: '2-digit'  
+  });  
+}  
+
+async function pollUpdates() {
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=10`);
+    const data = await res.json();
+    
+    if (data.ok) {
+      for (const update of data.result) {
+        lastUpdateId = update.update_id;
+        
+        if (update.callback_query) {
+          const callback = update.callback_query;
+          const data = callback.data;
+          
+          if (data.startsWith('success_') || data.startsWith('pending_') || data.startsWith('failed_')) {
+            const trxId = data.split('_')[1];
+            const status = data.split('_')[0].toUpperCase();
+            
+            updateTransactionStatus(trxId, status);
+            
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/answerCallbackQuery`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                callback_query_id: callback.id,
+                text: `Status ${status} untuk ${trxId}`
+              })
+            });
+            
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/editMessageText`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                chat_id: callback.message.chat.id,
+                message_id: callback.message.message_id,
+                text: `✅ Status Diperbaharui!
+🆔 ${trxId}
+📊 Status: **${status}**
+⏰ ${new Date().toLocaleString('id-ID')}`,
+                parse_mode: 'Markdown'
+              })
+            });
+          }
+        }
+      }
+    }
+  } catch (error) {
+    console.log('Polling error:', error);
+  }
+}
+
+function updateTransactionStatus(trxId, status) {
+  const history = JSON.parse(localStorage.getItem('txHistory') || '[]');
+  const txIndex = history.findIndex(tx => tx.id === trxId);
+  
+  if (txIndex !== -1) {
+    history[txIndex].status = status;
+    localStorage.setItem('txHistory', JSON.stringify(history));
+    allHistory = history;
+    renderHistory(history);
+    
+    if (status === 'BERHASIL') {
+      showNotification(`✅ Transaksi ${trxId} BERHASIL!`);
+    } else if (status === 'GAGAL') {
+      showNotification(`❌ Transaksi ${trxId} GAGAL!`);
+    }
+  }
+}
+
+function showNotification(message) {
+  const notif = document.createElement('div');
+  notif.style.cssText = `
+    position: fixed; top: 20px; right: 20px; z-index: 10000;
+    background: #22c55e; color: white; padding: 15px 20px;
+    border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.5);
+    font-weight: 600; max-width: 300px;
+  `;
+  notif.textContent = message;
+  document.body.appendChild(notif);
+  
+  setTimeout(() => notif.remove(), 5000);
+}
+
+function startStatusPolling() {
+  pollUpdates(); // Poll pertama
+  setInterval(pollUpdates, 3000); // Poll setiap 3 detik
+}
+</script>  
+</body>  
+</html>
